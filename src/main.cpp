@@ -16,6 +16,22 @@ Ticker ticker;
 
 #define TRIGGER_PIN 0
 
+// D1 Mini
+// Pin Definition                    // comments on Pin Usage:
+//#define LED_RED_PIN     16         // D0/GPIO16 the red LED on the NodeMCU 1.0 - wakeup from deepsleep
+                                     // D1/GPIO05                  i.e. I2C SCL
+                                     // D2/GPIO04 - wakeup high! - i.e. I2C SDA
+                                     // D3/GPIO0 - Flash Button
+//#define LED_BLUE_PIN    D4         // D4/GPIO2 the blue LED on the ESP-12e - is also Serial1 - could be used for Debug/Serial1.print
+                                     // D5/GPIO14 - HSCLK -             
+                                     // D6/GPIO12 - HMISO -             
+                                     // D7/GPIO13 - HMOSI -
+                                     // D8/GPIO15 - HCS - wakeup low - darf daher nicht mit SS vom PN532 belegt werden! WS2811 geht am ESP: D1 D2 D4 D8 10. Bei D4 leuchtet die blaue LED am ESP permanent // geht nicht am ESP: D0
+//serial                             // D9/GPIO03 - RX
+//serial                             // D10/GPIO01 - TX
+                                     // GPIO09 - macht nur Probleme
+                                     // GPIO10 - für out ok
+
 
 ////////////////////////////////////////////////////////////////////////
 
