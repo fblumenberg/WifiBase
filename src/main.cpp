@@ -65,21 +65,22 @@ void connectToWifi(WiFiManager &wifiManager, bool autoConnect)
   // start ticker with 0.5 because we start in AP mode and try to connect
   ticker.attach(0.6, tick);
 
-  // The extra parameters to be configured (can be either global or just in the setup)
-  // After connecting, parameter.getValue() will get you the configured value
-  // id/name placeholder/prompt default length
-  // WiFiManagerParameter custom_mqtt_name("name", "mqtt name", String(config.mqttClientName).c_str(), 20);
-  // WiFiManagerParameter custom_mqtt_server("server", "mqtt server", config.mqttServer.c_str(), 40);
-  // WiFiManagerParameter custom_mqtt_port("port", "mqtt port", String(config.mqttPort).c_str(), 6);
 
   // wifiManager.resetSettings();
   wifiManager.setAPCallback(configModeCallback);
   wifiManager.setSaveConfigCallback(saveConfigCallback);
 
+  // The extra parameters to be configured (can be either global or just in the setup)
+  // After connecting, parameter.getValue() will get you the configured value
+  // id/name placeholder/prompt default length
+  WiFiManagerParameter custom_mqtt_name("name", "mqtt name", String(config.mqttClientName).c_str(), 20);
+  WiFiManagerParameter custom_mqtt_server("server", "mqtt server", config.mqttServer.c_str(), 40);
+  WiFiManagerParameter custom_mqtt_port("port", "mqtt port", String(config.mqttPort).c_str(), 6);
+
   //add all your parameters here
-  // wifiManager.addParameter(&custom_mqtt_server);
-  // wifiManager.addParameter(&custom_mqtt_port);
-  // wifiManager.addParameter(&custom_mqtt_name);
+  wifiManager.addParameter(&custom_mqtt_server);
+  wifiManager.addParameter(&custom_mqtt_port);
+  wifiManager.addParameter(&custom_mqtt_name);
 
   shouldSaveConfig = false;
 
@@ -93,9 +94,9 @@ void connectToWifi(WiFiManager &wifiManager, bool autoConnect)
   }
 
   //read updated parameters
-  // config.mqttServer = custom_mqtt_server.getValue();
-  // config.mqttClientName = custom_mqtt_name.getValue();
-  // config.mqttPort = atoi(custom_mqtt_port.getValue());
+  config.mqttServer = custom_mqtt_server.getValue();
+  config.mqttClientName = custom_mqtt_name.getValue();
+  config.mqttPort = atoi(custom_mqtt_port.getValue());
 
   //save the custom parameters to FS
   if (shouldSaveConfig)

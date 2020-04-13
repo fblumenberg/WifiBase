@@ -17,7 +17,7 @@ bool loadConfig()
     return false;
   }
 
-  StaticJsonDocument<200> jsonDoc;
+  DynamicJsonDocument jsonDoc(1024);
 
   auto error = deserializeJson(jsonDoc, configFile);
   if (error)
@@ -27,25 +27,15 @@ bool loadConfig()
     return false;
   }
 
-  const char *jsonString;
+  config.mqttServer = String((const char *)jsonDoc["mqttServer"]);
+  config.mqttClientName = String((const char *)jsonDoc["mqttClientName"]);
+  config.mqttPort = jsonDoc["mqttPort"];
 
-  // config.doConnect = json["doConnect"];
-
-  // jsonString = json["mqttServer"];
-  // config.mqttServer = String((const char *)json["mqttServer"]);
-
-  // jsonString = json["mqttClientName"];
-  // config.mqttClientName = jsonString; //String(json["mqttClientName"]);
-
-  // jsonString = json["mqttTopic"];
-  // config.mqttTopic = jsonString; //String(json["mqttClientName"]);
-
-  // config.mqttPort = json["mqttPort"];
-
-  // Real world application would store these values in some variables for
-  // later use.
   Serial.print("Loaded serverName: ");
   Serial.println(config.mqttServer);
+  Serial.print("Loaded clientName: ");
+  Serial.println(config.mqttClientName);
+
   return true;
 }
 
@@ -58,7 +48,8 @@ bool saveConfig()
     Serial.println("Failed to open config file for writing");
     return false;
   }
-  StaticJsonDocument<200> doc;
+
+  DynamicJsonDocument doc(1024);
 
   doc["mqttServer"] = config.mqttServer;
   doc["mqttPort"] = config.mqttPort;
@@ -68,6 +59,7 @@ bool saveConfig()
   if (serializeJson(doc, configFile) == 0)
   {
     Serial.println(F("Failed to write to file"));
+    return false;
   }
 
   return true;
